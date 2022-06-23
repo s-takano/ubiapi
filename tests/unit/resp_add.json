@@ -1,0 +1,65 @@
+{
+    "timestamp": "2022-06-20T08:32:52Z",
+    "checkouts": [
+        {
+            "id": 284960714,
+            "guid": "74e5071e-07f1-4932-beb3-759a0202ad3b",
+            "account_id": 36872,
+            "paid_at": "2022-06-21T16:20:20Z",
+            "closed_at": "2022-06-21T16:20:20Z",
+            "deleted_at": null,
+            "created_at": "2022-06-20T08:32:51Z",
+            "updated_at": "2022-06-20T08:32:51Z",
+            "opened_at": null,
+            "price": "41843.0",
+            "change": "0.0",
+            "cashier_id": 167226,
+            "customers_count": 1,
+            "payments": [
+                {
+                    "id": 271086000,
+                    "guid": "372c8442-72af-4f5c-be56-f5b5df873e40",
+                    "payment_type_id": 207227,
+                    "amount": "42000.0",
+                    "payment_annotation": null,
+                    "transaction_info": null
+                }
+            ],
+            "taxes": [],
+            "items": [
+                {
+                    "id": 936884549,
+                    "guid": "459fbe40-21d3-402c-b46c-1d6f7bee5d49",
+                    "menu_item_id": 47722720,
+                    "count": 1,
+                    "sales": "41833.0",
+                    "unit_price": null,
+                    "tax": "10.0",
+                    "discount_sales": "0.0",
+                    "discount_tax": "0.0",
+                    "annotations": [],
+                    "price_book_id": null,
+                    "price_type": null,
+                    "tax_rate": null,
+                    "price_entry_method": null,
+                    "created_at": "2022-06-20T08:32:52Z",
+                    "updated_at": "2022-06-20T08:32:52Z"
+                }
+            ],
+            "table_ids": [],
+            "customer_tag_ids": [],
+            "modifier": "0.0",
+            "status": "close",
+            "sales_date": "2022-06-21",
+            "device_id": "e10cca69-25bf-49ed-98f0-7541eb2395a0",
+            "memo": null,
+            "mark_color": null,
+            "calculation_option": {
+                "tax_rounding_mode": "plain",
+                "price_rounding_mode": "plain",
+                "tax_calculation_level": "checkout_item"
+            },
+            "memberships": []
+        }
+    ]
+}

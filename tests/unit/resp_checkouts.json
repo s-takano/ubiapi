@@ -1,0 +1,128 @@
+{
+    "timestamp": "2022-06-19T21:34:21Z",
+    "next_batch_since": "2022-06-19T21:34:21Z",
+    "last_updated_at": "2022-06-19T21:34:20Z",
+    "next-url": null,
+    "checkouts": [
+        {
+            "id": 284886672,
+            "guid": "d0d4bb9e-bc8c-4331-a900-dc061d815791",
+            "account_id": 36872,
+            "paid_at": "2022-06-19T16:20:20Z",
+            "closed_at": "2022-06-19T16:20:20Z",
+            "deleted_at": null,
+            "created_at": "2022-06-19T20:56:38Z",
+            "updated_at": "2022-06-19T20:56:38Z",
+            "opened_at": null,
+            "price": "84.0",
+            "change": "26.0",
+            "cashier_id": 167226,
+            "customers_count": 1,
+            "payments": [
+                {
+                    "id": 271013944,
+                    "guid": "391ceb0d-de25-4ce4-848f-dace611a79ab",
+                    "payment_type_id": 207227,
+                    "amount": "110.0",
+                    "payment_annotation": null,
+                    "transaction_info": null
+                }
+            ],
+            "taxes": [],
+            "items": [
+                {
+                    "id": 936706862,
+                    "guid": "a053df9b-82d6-4aab-b782-60340a56153f",
+                    "menu_item_id": 47722713,
+                    "count": 1,
+                    "sales": "100.0",
+                    "unit_price": null,
+                    "tax": "5.0",
+                    "discount_sales": "20.0",
+                    "discount_tax": "1.0",
+                    "annotations": [],
+                    "price_book_id": null,
+                    "price_type": null,
+                    "tax_rate": null,
+                    "price_entry_method": null,
+                    "created_at": "2022-06-19T20:56:38Z",
+                    "updated_at": "2022-06-19T20:56:38Z"
+                }
+            ],
+            "table_ids": [],
+            "customer_tag_ids": [],
+            "modifier": "0.0",
+            "status": "close",
+            "sales_date": "2022-06-19",
+            "device_id": "e10cca69-25bf-49ed-98f0-7541eb2395a0",
+            "memo": null,
+            "mark_color": null,
+            "calculation_option": {
+                "tax_rounding_mode": "plain",
+                "price_rounding_mode": "plain",
+                "tax_calculation_level": "checkout_item"
+            },
+            "memberships": []
+        },
+        {
+            "id": 284886684,
+            "guid": "3633df2a-f24c-481a-b201-efca928dc4e7",
+            "account_id": 36872,
+            "paid_at": "2022-06-20T16:20:20Z",
+            "closed_at": "2022-06-20T16:20:20Z",
+            "deleted_at": null,
+            "created_at": "2022-06-19T21:29:55Z",
+            "updated_at": "2022-06-20T21:29:55Z",
+            "opened_at": null,
+            "price": "40843.0",
+            "change": "0.0",
+            "cashier_id": 167226,
+            "customers_count": 1,
+            "payments": [
+                {
+                    "id": 271013955,
+                    "guid": "17800873-debb-4211-a0de-415508f96ece",
+                    "payment_type_id": 207227,
+                    "amount": "41000.0",
+                    "payment_annotation": null,
+                    "transaction_info": null
+                }
+            ],
+            "taxes": [],
+            "items": [
+                {
+                    "id": 936706906,
+                    "guid": "934302c2-a86a-4a10-93a4-ade5fb9bc306",
+                    "menu_item_id": 47722720,
+                    "count": 1,
+                    "sales": "40833.0",
+                    "unit_price": null,
+                    "tax": "10.0",
+                    "discount_sales": "0.0",
+                    "discount_tax": "0.0",
+                    "annotations": [],
+                    "price_book_id": null,
+                    "price_type": null,
+                    "tax_rate": null,
+                    "price_entry_method": null,
+                    "created_at": "2022-06-19T21:29:55Z",
+                    "updated_at": "2022-06-19T21:29:55Z"
+                }
+            ],
+            "table_ids": [],
+            "customer_tag_ids": [],
+            "modifier": "0.0",
+            "status": "close",
+            "sales_date": "2022-06-20",
+            "device_id": "e10cca69-25bf-49ed-98f0-7541eb2395a0",
+            "memo": null,
+            "mark_color": null,
+            "calculation_option": {
+                "tax_rounding_mode": "plain",
+                "price_rounding_mode": "plain",
+                "tax_calculation_level": "checkout_item"
+            },
+            "memberships": []
+        }
+    ]
+}

@@ -1,63 +1,59 @@
 from abc import ABC, abstractmethod
-from ast import parse
 from asyncio.log import logger
 from datetime import datetime
-from http.client import responses
-from msilib import schema
 from dateutil import parser
 from typing import Optional, List
 
 from pydantic import BaseModel
-from utilities.utils import get_logger
-from schemas import Checkout, Account
-import schemas
+from src.utilities.utils import get_logger
+from src.schemas import CheckoutBase, Checkout, Account, CheckoutCreate, CheckoutPartialUpdate
 import requests
 
 logger = get_logger(__name__)
 
 class CheckoutManagerBase(ABC):
     @abstractmethod
-    def add(self, checkout: schemas.CheckoutCreate) -> schemas.Checkout:
+    def add(self, checkout: CheckoutCreate) -> Checkout:
         """
         Adds a checkout to the database
         Args:
-            checkout (schemas.CheckoutCreate): Checkout to be added
+            checkout (CheckoutCreate): Checkout to be added
 
         Returns:
-            schemas.Checkout: Inserted checkout
+            Checkout: Inserted checkout
         """
         ...
 
     @abstractmethod
-    def search(self) -> Optional[List[schemas.Checkout]]:
+    def search(self) -> Optional[List[Checkout]]:
         """
         Returns checkouts under some criteria
         Returns:
-            Optional[List[schemas.Checkout]]: List of checkouts
+            Optional[List[Checkout]]: List of checkouts
         """
         ...
 
     @abstractmethod
-    def get(self, id: int) -> Optional[schemas.Checkout]:
+    def get(self, id: int) -> Optional[Checkout]:
         """
         Returns a checkout from the database
         Args:
             id (int): Checkout ID of the checkout to be updated
         Returns:
-            Optional[schemas.Checkout]: Checkout
+            Optional[Checkout]: Checkout
         """
         ...
 
     @abstractmethod
-    def update(self, id: int, checkout: schemas.CheckoutPartialUpdate) -> schemas.Checkout:
+    def update(self, id: int, checkout: CheckoutPartialUpdate) -> Checkout:
         """
         Updates a checkout
         Args:
             id (int): Checkout ID of the checkout to be updated
-            checkout (schemas.Checkout): Checkout to update
+            checkout (Checkout): Checkout to update
 
         Returns:
-            schemas.Checkout: Updated checkout
+            Checkout: Updated checkout
         """
         ...
 
@@ -75,7 +71,7 @@ class SearchCriteria(BaseModel):
     def get_default():
         return SearchCriteria(since=datetime(1900, 1, 1))
 
-    def meets(self, checkout : schemas.CheckoutBase):
+    def meets(self, checkout : CheckoutBase):
         return parser.parse(checkout["sales_date"]) >= self.since
 
     def to_query_string(self) -> dict:
@@ -236,12 +232,12 @@ class CheckoutManager(CheckoutManagerBase):
         super().__init__()
         self.client = client
 
-    def add(self, checkout: schemas.CheckoutCreate) -> schemas.Checkout:
+    def add(self, checkout: CheckoutCreate) -> Checkout:
         resp = self.client.add(checkout.dict())
         return resp.checkout
 
 
-    def search(self, criteria : Optional[SearchCriteria] = None) -> Optional[List[schemas.Checkout]]:
+    def search(self, criteria : Optional[SearchCriteria] = None) -> Optional[List[Checkout]]:
         if criteria is None:
             criteria = SearchCriteria.get_default()
 
@@ -250,12 +246,12 @@ class CheckoutManager(CheckoutManagerBase):
         return resp.checkouts
 
 
-    def get(self, id: int) -> Optional[schemas.Checkout]:
+    def get(self, id: int) -> Optional[Checkout]:
         resp = self.client.get(id)
-        return schemas.Checkout.parse_obj(resp.checkout)
+        return Checkout.parse_obj(resp.checkout)
 
 
-    def update(self, id: int, checkout: schemas.CheckoutPartialUpdate) -> schemas.Checkout:
+    def update(self, id: int, checkout: CheckoutPartialUpdate) -> Checkout:
         resp = self.client.update(id, checkout.dict())
         return resp
     
