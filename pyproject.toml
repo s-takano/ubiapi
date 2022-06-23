@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "ubiapi"
+name = "ubiclient"
 version = "1.0.0"
 description = "Python API wrapper for Ubiregi POS API"
 readme = "README.md"

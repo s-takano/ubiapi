@@ -1,7 +1,7 @@
 from datetime import datetime
 import unittest
-from src.schemas import Checkout
-from src.manager.checkout import CheckoutManager, SearchCriteria, UbiClientForTest
+from src.ubiclient.schemas import Checkout
+from src.ubiclient.checkout import CheckoutManager, SearchCriteria, UbiClientForTest
 from os.path import dirname as d
 from os.path import abspath
 import json

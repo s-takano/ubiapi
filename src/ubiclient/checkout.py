@@ -5,8 +5,9 @@ from dateutil import parser
 from typing import Optional, List
 
 from pydantic import BaseModel
-from src.utilities.utils import get_logger
-from src.schemas import CheckoutBase, Checkout, Account, CheckoutCreate, CheckoutPartialUpdate
+
+from src.ubiclient.utilities.utils import get_logger
+from src.ubiclient.schemas import CheckoutBase, Checkout, Account, CheckoutCreate, CheckoutPartialUpdate
 import requests
 
 logger = get_logger(__name__)

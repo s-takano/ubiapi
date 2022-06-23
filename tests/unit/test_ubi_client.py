@@ -2,7 +2,7 @@ from datetime import datetime
 import unittest
 import os
 
-from src.manager.checkout import UbiClient, SearchCriteria
+from src.ubiclient.checkout import UbiClient, SearchCriteria
 
 auth_token = os.environ["X-Ubiregi-Auth-Token"]
 
