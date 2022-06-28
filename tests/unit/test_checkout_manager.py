@@ -1,32 +1,60 @@
 from datetime import datetime
 import unittest
-from src.ubiclient.schemas import Checkout
-from src.ubiclient.checkout import CheckoutManager, SearchCriteria, UbiClientForTest
+from unittest.mock import patch
 from os.path import dirname as d
 from os.path import abspath
+import sys
+sys.path.append( "C:\\Projects\\Ponytail\\ubiclient\\src")
+print(sys.path)
+from ubiclient.schemas import Checkout
+from ubiclient.checkout import CheckoutManager, SearchCriteria, create_client
+from ubiclient.ubi_agent import SearchCriteria, UbiClientForTest
 import json
 
 class TestCheckoutManager(unittest.TestCase):
     def setUp(self) -> None: 
-        client = UbiClientForTest(self.get_resp_checkouts())
-        self.api_manager = CheckoutManager(client)
-
+        self.client = UbiClientForTest(self.get_resp_checkouts())
+            
     def test_search_all(self):
-        checkouts = self.api_manager.search()
-        self.assertEqual(len(checkouts), 2)
+        with patch("ubiclient.checkout.create_client", return_value = self.client) as mocked_factory:
+            sut = CheckoutManager()
+            checkouts = sut.search()
+
+            self.assertEqual(len(checkouts), 26)
+            mocked_factory.assert_called()
+
 
     def test_search_since(self):
-        checkouts = self.api_manager.search(SearchCriteria(since=datetime(2022, 6, 20)))
-        self.assertEqual(len(checkouts), 1)
+        with patch("ubiclient.checkout.create_client", return_value = self.client) as mocked_factory:
+            sut = CheckoutManager()
+            checkouts = sut.search(SearchCriteria(since=datetime(2022, 6, 25, 12)))
+
+            self.assertEqual(len(checkouts), 6)
+            mocked_factory.assert_called()
+
+    def test_search_next_url(self):
+        with patch("ubiclient.checkout.create_client", return_value = self.client) as mocked_factory:
+            self.client.window = 1
+
+            sut = CheckoutManager()
+            checkouts = sut.search()
+
+            self.assertEqual(len(checkouts), 26)
+            mocked_factory.assert_called()
+
 
     def test_add(self):
-        checkout = Checkout.parse_obj(self.get_resp_checkouts()["checkouts"][0])
-        checkout.guid = "new_guid"
+        with patch("ubiclient.checkout.create_client", return_value = self.client) as mocked_factory:
+            sut = CheckoutManager()
 
-        inserted = self.api_manager.add(checkout)
+            checkout = Checkout.parse_obj(self.get_resp_checkouts()["checkouts"][0])
+            checkout.guid = "new_guid"
 
-        self.assertEqual("new_guid", inserted.guid)
-        self.assertEqual(len(self.api_manager.search()), 3)
+            inserted = sut.add(checkout)
+
+            self.assertEqual("new_guid", inserted.guid)
+            self.assertEqual(len(sut.search()), 27)
+            mocked_factory.assert_called()
 
     def get_resp_checkouts(self):
         json_path = "{}\{}".format( d(abspath(__file__)), "resp_checkouts.json")
@@ -34,9 +62,19 @@ class TestCheckoutManager(unittest.TestCase):
             json_obj = json.load(json_file)
         return json_obj
 
+    def test_get_nothing(self):
+        with patch("ubiclient.checkout.create_client", return_value = self.client) as mocked_factory:
+            sut = CheckoutManager()
+            checkout = sut.get(0)
+            self.assertIsNone(checkout)
+            mocked_factory.assert_called()
+
     def test_get(self):
-        checkout = self.api_manager.get(284886684)
-        self.assertEqual(checkout.id, 284886684)
+        with patch("ubiclient.checkout.create_client", return_value = self.client) as mocked_factory:
+            sut = CheckoutManager()
+            checkout = sut.get(285659955)
+            self.assertEqual(checkout.id, 285659955)
+            mocked_factory.assert_called()
 
     def test_update_checkout(self):
         pass

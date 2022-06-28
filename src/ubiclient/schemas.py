@@ -1,15 +1,16 @@
 from datetime import datetime
+from http.client import REQUEST_URI_TOO_LONG
 from optparse import Option
+from tkinter.messagebox import NO
 from pydantic import BaseModel, validator
 from typing import Optional, List
+from ubiclient.utilities.utils import date_validator
 
 """
 Contains all schemas alias domain models of the application.
 For domain modelling, the library pydantic is used.
 Pydantic allows to create versatile domain models and ensures data integrity and much more.
 """
-
-
 class CalculationOption(BaseModel):
     tax_rounding_mode: str  # "down",
     price_rounding_mode: str  # "plain",
@@ -22,14 +23,18 @@ class CalculationOption(BaseModel):
             "tax_calculation_level": {"description": "checkout"}
         }
 
+
 class CheckoutPayment(BaseModel):
     ...
+
 
 class CheckoutItem(BaseModel):
     ...
 
+
 class CheckoutTax(BaseModel):
     ...
+
 
 class CheckoutBase(BaseModel):
     """
@@ -38,16 +43,16 @@ class CheckoutBase(BaseModel):
     guid: str  # "8928309238-d987aerkeh-9847tdfkzhg4"
     device_id: str  # "710b52d6-9d8f-11e5-9aac-af957c6aaf43"
     account_id: int  # 1
-    paid_at: datetime  # "2011-12-24T16:20:20Z"
-    closed_at : datetime #": "2022-06-19T16:20:20Z",
-    deleted_at : Optional[str] #": null,
-    created_at : datetime #"2022-06-19T20:56:38Z",
-    updated_at : datetime # "2022-06-19T20:56:38Z",
-    opened_at : Optional[str] #: null,
+    paid_at: Optional[datetime]  # "2011-12-24T16:20:20Z"
+    closed_at: Optional[datetime]  # ": "2022-06-19T16:20:20Z",
+    deleted_at: Optional[datetime]  # ": null,
+    created_at: datetime  # "2022-06-19T20:56:38Z",
+    updated_at: datetime  # "2022-06-19T20:56:38Z",
+    opened_at: Optional[datetime]  # : null,
     sales_date: str  #: "2011-12-25"
     price: str  # "385.0",
     change: str  # "4000.0"
-    cashier_id : int #: 167226,
+    cashier_id: Optional[int]  # : 167226,
     status: str  # "close"
     # cashier_id: Optional[int] # null
     customers_count: int  # 0
@@ -59,21 +64,29 @@ class CheckoutBase(BaseModel):
     # modifier": "0.0",
     calculation_option: CalculationOption
 
+    @validator("paid_at", "closed_at", "deleted_at", "opened_at", pre=True)
+    def my_optional_date_validator(cls, d):
+        return date_validator(cls, d)
+
+    @validator("created_at", "updated_at", pre=True)
+    def my_date_validator(cls, d):
+        return date_validator(cls, d, False)
+
     class Config:
         fields = {
             "guid": {"description": "8928309238-d987aerkeh-9847tdfkzhg4"},
             "device_id": {"description": "710b52d6-9d8f-11e5-9aac-af957c6aaf43"},
             "account_id": {"description": 1},
             "paid_at": {"description": "2011-12-24T16:20:20Z"},
-            "closed_at" : {"description": "2022-06-19T16:20:20Z"},
-            "deleted_at" : {"description": "null"},
-            "created_at" : {"description": "2022-06-19T20:56:38Z"},
-            "updated_at" : {"description": "2022-06-19T20:56:38Z"},
-            "opened_at" : {"description": "null"},
+            "closed_at": {"description": "2022-06-19T16:20:20Z"},
+            "deleted_at": {"description": "null"},
+            "created_at": {"description": "2022-06-19T20:56:38Z"},
+            "updated_at": {"description": "2022-06-19T20:56:38Z"},
+            "opened_at": {"description": "null"},
             "sales_date": {"description": "2011-12-25"},
             "price": {"description": "385.0"},
             "change": {"description": "4000.0"},
-            "cashier_id" : {"description": "167226"},
+            "cashier_id": {"description": "167226"},
             "status": {"description": "close"},
             "customers_count": {"description": 0},
             "payments": {"description": "[ $Payments]"},
@@ -111,88 +124,99 @@ class Checkout(CheckoutBase):
 
 
 class CustomerTag(BaseModel):
-    id : int #": 123,
-    name : str #": "Dating",
-    position : Optional[int] #": null,
-    icon : Optional[str] #": $base64Encoded,
-    icon_mime : str #": "image/png"
+    id: int  # ": 123,
+    name: str  # ": "Dating",
+    position: Optional[int]  # ": null,
+    icon: Optional[str]  # ": $base64Encoded,
+    icon_mime: str  # ": "image/png"
 
 
 class PaymentType(BaseModel):
-    id : int #": 207227,
-    name : str #": "現金",
-    enabled : bool #": true,
-    change : bool #": true,
-    position : int #": 0,
-    kind : str #": "cash",
-    marketable : bool #": false,
-    icon_url : Optional[str] #": null,
-    annotations : List[dict] #": [],
-    restricted_by_default : bool #": false,
-    allowed_category_ids : List[int] #": [],
-    denied_category_ids : List[int] #": [],
-    capped : bool #": false
+    id: int  # ": 207227,
+    name: str  # ": "現金",
+    enabled: bool  # ": true,
+    change: bool  # ": true,
+    position: int  # ": 0,
+    kind: str  # ": "cash",
+    marketable: bool  # ": false,
+    icon_url: Optional[str]  # ": null,
+    annotations: List[dict]  # ": [],
+    restricted_by_default: bool  # ": false,
+    allowed_category_ids: List[int]  # ": [],
+    denied_category_ids: List[int]  # ": [],
+    capped: bool  # ": false
+
 
 
 class Cashier(BaseModel):
-    id : int #": 167226,
-    name : str #": "レジ1",
-    enabled : bool #": true,
-    created_at : datetime #": "2022-06-09T12:40:17Z",
-    updated_at : datetime #": "2022-06-11T09:33:11Z"
+    id: int  # ": 167226,
+    name: str  # ": "レジ1",
+    enabled: bool  # ": true,
+    created_at: datetime  # ": "2022-06-09T12:40:17Z",
+    updated_at: datetime  # ": "2022-06-11T09:33:11Z"
+
+    @validator("created_at", "updated_at", pre=True)
+    def my_date_validator(cls, d):
+        return date_validator(cls, d)
 
 
 class PriceBook(BaseModel):
-    id : int #": 123,
-    account_id : int #": 9744,
-    name : str #": "Take Out",
-    tax_rate : str #": "8.0",
-    receipt_symbol : str #": "※",
-    receipt_text : str #": "※印は軽減税率対象商品",
-    tax_type : str #": null,
-    position : int #": 1,
-    valid_since : str #": "2019/10/01",
-    valid_until : str #": "2020/09/30"
+    id: int  # ": 123,
+    account_id: int  # ": 9744,
+    name: str  # ": "Take Out",
+    tax_rate: str  # ": "8.0",
+    receipt_symbol: Optional[str]  # ": "※",
+    receipt_text: Optional[str]  # ": "※印は軽減税率対象商品",
+    tax_type: Optional[str]  # ": null,
+    position: int  # ": 1,
+    valid_since: str  # ": "2019/10/01",
+    valid_until: Optional[str]  # ": "2020/09/30"
+
 
 class Account(BaseModel):
-        id : int # 36872,
-        login : str # "someone",
-        email : str # "someone@something.jp",
-        name : str # "ビューティーセラーByハリウッド",
-        expire_at : datetime #": "2022-07-09T12:40:00Z",
-        subscription : str #": "trial",
-        currency : str #": "JPY",
-        lang : str #": "ja",
-        date_offset : int #": 6,
-        timezone : str #": "Asia/Tokyo",
-        receipt_title : str #": "レシート",
-        receipt_footer : str #": "住所やメッセージをここに記載します。 ユビレジWebサイトにログインし「レジ管理 → レシート」から設定を行います。",
-        receipt_logo : Optional[str] #": null,
-        stamp_tax_threshold : str #": "50000",
-        stamp_tax_text : str #": "収　　入\n\n\n印　　紙",
-        menus : List[int] #": [            36585        ],
-        customer_tags : List[CustomerTag] #": [],
-        payment_types : List[PaymentType] #
-        paid_inout_reasons : List[str] #": [],
-        cashiers : List[Cashier]
-        price_books : List[PriceBook]
-        #"barcode_rules": [],
-        parent_ids : List[int] #": [],
-        child_ids : List[int] #": [],
-        sibling_ids : List[int] #": [],
-        created_at : datetime #": "2022-06-09T12:40:16Z",
-        updated_at : datetime #": "2022-06-11T09:33:11Z",
-        # "devices": [
-        #     {
-        #         "guid": "e10cca69-25bf-49ed-98f0-7541eb2395a0",
-        #         "name": "名前なし"
-        #     }
-        # ],
-        setting_disabled : bool #": false,
-        menu_group_editable : bool #": true,
-        # "enabled_integration_modules": [],
-        # "integration_settings": {},
-        calculation_option : dict
-        options : dict
-        # inventory_enabled : null,
-        # "settings": {}
+    id: int  # 36872,
+    login: str  # "someone",
+    email: str  # "someone@something.jp",
+    name: str  # "ビューティーセラーByハリウッド",
+    expire_at: datetime  # ": "2022-07-09T12:40:00Z",
+    subscription: str  # ": "trial",
+    currency: str  # ": "JPY",
+    lang: str  # ": "ja",
+    date_offset: int  # ": 6,
+    timezone: str  # ": "Asia/Tokyo",
+    receipt_title: str  # ": "レシート",
+    receipt_footer: str  # ": "住所やメッセージをここに記載します。 ユビレジWebサイトにログインし「レジ管理 → レシート」から設定を行います。",
+    receipt_logo: Optional[str]  # ": null,
+    stamp_tax_threshold: str  # ": "50000",
+    stamp_tax_text: str  # ": "収　　入\n\n\n印　　紙",
+    menus: List[int]  # ": [            36585        ],
+    customer_tags: List[CustomerTag]  # ": [],
+    payment_types: List[PaymentType]
+    paid_inout_reasons: List[str]  # ": [],
+    cashiers: List[Cashier]
+    price_books: List[PriceBook]
+    # "barcode_rules": [],
+    parent_ids: List[int]  # ": [],
+    child_ids: List[int]  # ": [],
+    sibling_ids: List[int]  # ": [],
+    created_at: datetime  # ": "2022-06-09T12:40:16Z",
+    updated_at: datetime  # ": "2022-06-11T09:33:11Z",
+    # "devices": [
+    #     {
+    #         "guid": "e10cca69-25bf-49ed-98f0-7541eb2395a0",
+    #         "name": "名前なし"
+    #     }
+    # ],
+    setting_disabled: bool  # ": false,
+    menu_group_editable: bool  # ": true,
+    # "enabled_integration_modules": [],
+    # "integration_settings": {},
+    calculation_option: dict
+    options: dict
+    # inventory_enabled : null,
+    # "settings": {}
+
+    
+    @validator("expire_at", "created_at", "updated_at", pre=True)
+    def my_date_validator(cls, d):
+        return date_validator(cls, d)
