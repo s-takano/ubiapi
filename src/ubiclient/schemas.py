@@ -7,7 +7,7 @@ from typing import Optional, List
 from ubiclient.utilities.utils import date_validator
 
 """
-Contains all schemas alias domain models of the application.
+Contains all schemas alias domain models of the Ubiregi API.
 For domain modelling, the library pydantic is used.
 Pydantic allows to create versatile domain models and ensures data integrity and much more.
 """
