@@ -177,7 +177,7 @@ class Account(BaseModel):
     id: int  # 36872,
     login: str  # "someone",
     email: str  # "someone@something.jp",
-    name: str  # "ビューティーセラーByハリウッド",
+    name: str  # "account name",
     expire_at: datetime  # ": "2022-07-09T12:40:00Z",
     subscription: str  # ": "trial",
     currency: str  # ": "JPY",
